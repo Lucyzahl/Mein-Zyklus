@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -22,11 +22,12 @@
 :root{color-scheme:light dark;
 --peach:#F4BEAE;--bub:#FF7BAC;--earth:#876029;--grape:#6D1F42;--lilac:#D3B6D3;--butter:#EFCE7B;--ice:#B8CEE8;--orange:#EF6F3C;--olive:#AFAB23;
 --ink:light-dark(#5a1636,#fbe6ef);--mu:light-dark(#8a5a6f,#d5b3c3);--card:light-dark(#ffffff,rgb(255 255 255/.08));--line:light-dark(rgb(109 31 66/.14),rgb(255 255 255/.16));
---bg-home:light-dark(#FDE8E1,#2b0f1d);--bg-cal:light-dark(#D3B6D3,#2a1733);--bg-stat:light-dark(#B8CEE8,#13243a);--bg-data:light-dark(#F1E4F1,#24142a);
+--bg-home:light-dark(#FDE8E1,#2b0f1d);--bg-cal:light-dark(#F7E2A6,#2b2210);--bg-stat:light-dark(#B8CEE8,#13243a);--bg-data:light-dark(#F1E4F1,#24142a);
 --bg:var(--bg-home)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 body[data-view=cal]{--bg:var(--bg-cal)}body[data-view=stat]{--bg:var(--bg-stat)}body[data-view=data]{--bg:var(--bg-data)}
 *{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body,button{touch-action:manipulation}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Outfit,system-ui,-apple-system,sans-serif;overflow-x:clip;transition:background .3s}
 main{max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 110px)}
 h1,h2,h3,.big,.num{font-family:Fredoka,Outfit,system-ui,sans-serif}
@@ -153,6 +154,15 @@ textarea{font:inherit;font-size:16px;width:100%;min-height:90px;border:2px solid
 .hz{position:relative;height:190px;margin:6px 0 4px}.hz svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .hleg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--mu)}.hleg i{display:inline-block;width:14px;height:4px;border-radius:2px;margin-right:5px;vertical-align:3px}
 .hnow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin-top:10px;font-size:14px}.hnow b{font-weight:600}
+.nlink{font:600 15px Outfit,sans-serif;border:0;background:var(--butter);color:#3d0f24;border-radius:999px;min-height:44px;padding:0 16px;margin-top:10px;cursor:pointer}
+.nut{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;padding:12px 0}.nut+.nut{border-top:1px solid var(--line)}
+.nut .ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center}.nut .ic svg{width:26px;height:26px}
+.nut b{display:block;font:600 17px Fredoka,sans-serif}.nut p{margin:2px 0 6px;font-size:15px}
+.foods{display:flex;flex-wrap:wrap;gap:5px}.foods span{font-size:13px;background:var(--card);border-radius:999px;padding:3px 10px}
+.hug .hi{width:84px;height:84px;margin:0 auto;border-radius:50%;background:var(--bub);display:grid;place-items:center}.hug .hi svg{width:44px;height:44px}
+.dmsg{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:0;border-radius:22px;padding:12px 16px;margin:0 0 12px;cursor:pointer}
+.dmsg .ic{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center}.dmsg .ic svg{width:22px;height:22px}
+.dmsg small{display:block;font-size:12px;color:var(--mu)}.dmsg span{font-size:15px;line-height:1.35}
 .empty{text-align:center;padding:10px 4px}.empty p{color:var(--mu)}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translateX(-50%);background:var(--grape);color:#fff;padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;white-space:nowrap}
 .toast.on{opacity:1}
@@ -172,6 +182,7 @@ textarea{font:inherit;font-size:16px;width:100%;min-height:90px;border:2px solid
   <p class="note" id="calhint" style="text-align:center">Kurz tippen: Periode eintragen · Lange drücken: Symptome &amp; mehr</p>
   <div class="legend"><span><i style="background:var(--bub)"></i>Periode</span><span><i style="box-shadow:inset 0 0 0 2px var(--bub)"></i>Erwartet</span><span><i style="background:rgb(175 171 35/.4)"></i>Fruchtbar</span><span><i style="background:var(--olive)"></i>Eisprung</span><span><i style="background:var(--orange)"></i>Notiz</span></div>
   <div class="tiles" id="tiles"></div>
+  <button class="dmsg" id="dmsg" aria-label="Nachricht für heute" style="margin:14px 0 0"></button>
  </section>
  <section class="view" id="v-stat">
   <h1>Übersicht</h1><p class="sub">Aus deinen eingetragenen Zyklen.</p>
@@ -312,14 +323,14 @@ const SAY={men:['Heute darfst du es ruhig angehen lassen.','Wärmflasche und Tee
  fer:['Heute leuchtest du richtig!','Volle Energie – genieß sie!','Heute ist ein Glitzertag.','Du bist heute nicht zu bremsen.'],
  lut:['Sei heute besonders lieb zu dir.','Ein Stück Schokolade ist völlig okay.','Gönn dir eine Pause, du hast sie verdient.','Langsam ist auch ein Tempo.'],
  late:['Bald ist es so weit – denk an deine Tasche.','Ich halte schon mal die Wärmflasche bereit.','Bleib entspannt, ich pass mit auf.'],
- none:['Hallo! Ich bin dein Zyklus-Stern.']};
+ none:['Schön, dass du da bist.']};
 let sayN=0;
 function buddy(key2,f){const L=SAY[key2],i=(Math.floor(today()/864e5)+sayN)%L.length;return`<div class="buddy"><button class="mascot" id="buddy" data-say="${key2}" aria-label="Stern antippen">${mascot(f)}</button><div class="bubble" id="bubble">${L[i]}</div></div>`}
 function periodStart(k){const d=parse(k);return!((S.days[key(add(d,-1))]||{}).flow>0)&&!((S.days[key(add(d,-2))]||{}).flow>0)}
 function celebrate(){
  const r=document.createElement('div');r.className='rain';const C=['var(--bub)','var(--butter)','var(--olive)','var(--lilac)','var(--orange)','var(--ice)'];
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)for(let i=0;i<36;i++){const s=document.createElement('i');s.style.cssText=`left:${Math.random()*100}%;--s:${10+Math.random()*16}px;--c:${C[i%6]};--d:${1.6+Math.random()*1.4}s;--w:${Math.random()*.8}s;--r:${Math.random()*720-360}deg`;r.appendChild(s)}
- const g=document.createElement('div');g.className='hug';g.innerHTML=`<div>${mascot('calm')}<p>Pass gut auf dich auf</p><span>Deine Periode hat begonnen. Ich hab’s eingetragen.</span></div>`;
+ const g=document.createElement('div');g.className='hug';g.innerHTML=`<div><div class="hi">${svgI('heart')}</div><p>Pass gut auf dich auf</p><span>Deine Periode hat begonnen und ist eingetragen.</span></div>`;
  document.body.append(g,r);const end=()=>{g.remove()};g.onclick=end;setTimeout(end,3200);setTimeout(()=>r.remove(),4200)}
 function afterFlow(k,was){const e=S.days[k]||{};if(!(was>0)&&e.flow>0&&periodStart(k))celebrate()}
 function phaseOnDate(m,d){let i=-1;for(let j=0;j<m.G.length;j++)if(m.G[j].start<=d)i=j;if(i<0)return null;const g=m.G[i],ns=m.G[i+1]?m.G[i+1].start:m.next,L=diff(g.start,ns),day=diff(g.start,d)+1;
@@ -351,22 +362,65 @@ function hzCard(m,d){hzState={L:m.cur.L,ov:m.cur.ov,P:m.cur.P,d};const v=hormone
  return`<div class="card"><h3>Hormone im Zyklus</h3><div class="hleg">${HZ.map(([n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('')}</div><div class="hz" id="hz"></div>
  <div class="hnow">${HZ.map(([n],j)=>`<span>${n}: <b>${lv(v[j])}</b></span>`).join('')}</div>
  <p class="note" style="margin:10px 0 0">Typischer Verlauf, an deinen Zyklus angepasst – keine Messung. LH löst den Eisprung aus, FSH lässt die Eizelle reifen.</p></div>`}
+const NI={
+ bean:'<path d="M7 8c2-4 9-4 10 1 1 4-3 5-4 8-1 3-8 3-8-2 0-3 1-5 2-7z"/><path d="M10 10c1-1 3-1 4 0"/>',
+ citrus:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/><path d="M12 7v10M7 12h10M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
+ fish:'<path d="M3 12c3-4 7-5 11-5 3 0 5 2 7 5-2 3-4 5-7 5-4 0-8-1-11-5zM3 12 1.5 8.5M3 12l-1.5 3.5"/><circle cx="16" cy="11" r="1"/>',
+ nut:'<path d="M12 3c4 3 6 7 6 11a6 6 0 0 1-12 0c0-4 2-8 6-11z"/><path d="M12 8v11"/>',
+ egg:'<path d="M12 3c3.5 0 6.5 6 6.5 10.5a6.5 6.5 0 0 1-13 0C5.5 9 8.5 3 12 3z"/>',
+ grain:'<path d="M12 21V7M12 7c-1.8-.8-3-2.6-3-4.5 1.8.8 3 2.6 3 4.5zm0 0c1.8-.8 3-2.6 3-4.5-1.8.8-3 2.6-3 4.5zM12 12c-2-1-3.5-3-3.5-5 2 1 3.5 3 3.5 5zm0 0c2-1 3.5-3 3.5-5-2 1-3.5 3-3.5 5zM12 17c-2-1-3.5-3-3.5-5 2 1 3.5 3 3.5 5zm0 0c2-1 3.5-3 3.5-5-2 1-3.5 3-3.5 5z"/>',
+ water:'<path d="M12 3.5c3 4.3 6 7.4 6 10.7a6 6 0 0 1-12 0c0-3.3 3-6.4 6-10.7z"/><path d="M9 14.5a3 3 0 0 0 3 3"/>',
+ berry:'<circle cx="8" cy="15" r="4"/><circle cx="16" cy="15" r="4"/><path d="M8 11c0-3.5 4-6 4-6s4 2.5 4 6M12 5V3"/>',
+ milk:'<path d="M8 3h8v3l2 3v12H6V9l2-3zM6 13h12M8 6h8"/>',
+ banana:'<path d="M5 16c6 3 13-1 14-9 .7-.8.7-2 0-3-1 4-5 9-12 9-1 0-2 1-2 3z"/>',
+ seed:'<ellipse cx="12" cy="12" rx="5" ry="8" transform="rotate(25 12 12)"/><path d="M10 9.5c.8 2 1.8 3.5 3.5 4.5"/>',
+ bowl:'<path d="M4 11h16a8 8 0 0 1-16 0zM8 7c1-1 2-1 3 0s2 1 3 0 2-1 3 0"/>',
+ leaf:'<path d="M5 19c0-8 6-14 14-14 0 8-6 14-14 14zM5 19l8-8"/>',
+ potato:'<path d="M5 14c-1-4 2-8 7-9 5-1 8 2 7 6s-4 7-8 7-5-1-6-4z"/><circle cx="10" cy="11" r=".8" fill="currentColor"/><circle cx="14" cy="13" r=".8" fill="currentColor"/>'};
+const NUT={
+ men:[['Eisen','bean','Gleicht aus, was du mit der Blutung verlierst, und hilft gegen Müdigkeit.',['Linsen','Haferflocken','Spinat','Kürbiskerne','rotes Fleisch']],
+  ['Vitamin C','citrus','Hilft deinem Körper, Eisen aus Pflanzen besser aufzunehmen.',['Paprika','Orangen','Brokkoli','Kiwi']],
+  ['Omega-3','fish','Wirkt entzündungshemmend und kann Regelschmerzen lindern.',['Lachs','Leinsamen','Walnüsse','Chiasamen']],
+  ['Magnesium','nut','Entspannt die Muskeln und kann Krämpfe mildern.',['Mandeln','Cashews','dunkle Schokolade']],
+  ['Flüssigkeit','water','Warme Getränke tun gut und helfen gegen Kopfschmerzen.',['Ingwertee','Kamillentee','Wasser']]],
+ fol:[['Eiweiß','egg','Unterstützt Aufbau und Energie, wenn du wieder aktiver wirst.',['Eier','Joghurt','Tofu','Kichererbsen']],
+  ['B-Vitamine','grain','Helfen, Nahrung in Energie umzuwandeln.',['Vollkornbrot','Eier','Haferflocken','Avocado']],
+  ['Zink','seed','Wichtig für die Reifung der Eizelle und für die Haut.',['Kürbiskerne','Haferflocken','Käse','Linsen']],
+  ['Probiotika','bowl','Eine gesunde Darmflora hilft beim Abbau überschüssiger Hormone.',['Naturjoghurt','Kefir','Sauerkraut']],
+  ['Folsäure','leaf','Wichtig für die Zellbildung, besonders bei Kinderwunsch.',['Spinat','Feldsalat','Bohnen','Spargel']]],
+ fer:[['Ballaststoffe','grain','Unterstützen die Verdauung und den Abbau von Östrogen.',['Gemüse','Vollkorn','Hülsenfrüchte','Äpfel']],
+  ['Antioxidantien','berry','Schützen die Zellen, auch die Eizelle.',['Beeren','Tomaten','Paprika','grüner Tee']],
+  ['Zink','seed','Unterstützt den Eisprung und das Immunsystem.',['Kürbiskerne','Cashews','Haferflocken']],
+  ['Folsäure','leaf','Besonders wichtig, wenn du schwanger werden möchtest.',['Spinat','Brokkoli','Kichererbsen']],
+  ['Flüssigkeit','water','Genug trinken hält dich jetzt fit und leistungsfähig.',['Wasser','ungesüßter Tee']]],
+ lut:[['Magnesium','nut','Kann PMS, Krämpfe und Schlafprobleme lindern.',['Nüsse','Haferflocken','Bananen','dunkle Schokolade']],
+  ['Vitamin B6','banana','Unterstützt die Bildung von Serotonin und damit deine Stimmung.',['Bananen','Kichererbsen','Lachs','Kartoffeln']],
+  ['Calcium','milk','Kann PMS-Beschwerden wie Reizbarkeit mildern.',['Joghurt','Käse','Mandeln','Brokkoli']],
+  ['Komplexe Kohlenhydrate','potato','Halten den Blutzucker stabil und helfen gegen Heißhunger.',['Süßkartoffeln','Vollkornnudeln','Quinoa']],
+  ['Wenig Salz & Koffein','water','Weniger davon kann Blähbauch und Brustspannen verringern.',['Kräutertee','Wasser mit Zitrone']]]};
+const NCOL=['var(--ice)','var(--butter)','var(--peach)','var(--lilac)','rgb(175 171 35/.45)'];
+let curPh='men';
+function openNut(){const ph=curPh==='ovu'?'fer':curPh,L=NUT[ph];
+ $('sheet').innerHTML=`<div class="handle"></div><h2>Nährstoffe · ${ph==='fer'?'Fruchtbare Tage':PH[ph].n}</h2><p class="sub">Was deinem Körper in dieser Phase guttut.</p>
+ ${L.map(([n,i,w,f],j)=>`<div class="nut"><div class="ic" style="background:${NCOL[j%5]}"><svg viewBox="0 0 24 24" fill="none" stroke="#5a1636" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:#5a1636">${NI[i]}</svg></div><div><b>${n}</b><p>${w}</p><div class="foods">${f.map(x=>`<span>${x}</span>`).join('')}</div></div></div>`).join('')}
+ <p class="note">Allgemeine Ernährungstipps, kein Ersatz für ärztlichen Rat. Nahrungsergänzungsmittel bitte nur nach Rücksprache.</p>
+ <div class="row"><button class="btn" id="close">Schließen</button></div>`;openSheet()}
 function renderHome(){_rh();drawHz()}
 function _rh(){
  const m=model(),t=today(),tk=key(t);$('dateline').textContent=fmt(t,{weekday:'long',day:'numeric',month:'long'});
- if(!m.last){$('home').innerHTML=`${buddy('none','happy')}<div class="empty"><svg viewBox="0 0 300 300" width="200" aria-hidden="true"><circle cx="150" cy="150" r="110" fill="none" stroke-width="36" stroke-dasharray="40 26" stroke-linecap="round" style="stroke:var(--peach)"/><circle cx="150" cy="40" r="14" stroke="#fff" stroke-width="4" style="fill:var(--grape)"/></svg><h2>Willkommen!</h2><p>Trag den ersten Tag deiner letzten Periode ein. Danach berechnet die App deinen Zyklus.</p><div class="row"><button class="btn" id="startToday">Periode hat heute begonnen</button></div><div class="row"><button class="btn soft" id="pickDay">Anderen Tag wählen</button></div><div class="row"><button class="btn soft" id="demo">Mit Beispieldaten ausprobieren</button></div></div>`;return}
+ if(!m.last){$('home').innerHTML=`<div class="empty"><svg viewBox="0 0 300 300" width="200" aria-hidden="true"><circle cx="150" cy="150" r="110" fill="none" stroke-width="36" stroke-dasharray="40 26" stroke-linecap="round" style="stroke:var(--peach)"/><circle cx="150" cy="40" r="14" stroke="#fff" stroke-width="4" style="fill:var(--grape)"/></svg><h2>Willkommen!</h2><p>Trag den ersten Tag deiner letzten Periode ein. Danach berechnet die App deinen Zyklus.</p><div class="row"><button class="btn" id="startToday">Periode hat heute begonnen</button></div><div class="row"><button class="btn soft" id="pickDay">Anderen Tag wählen</button></div><div class="row"><button class="btn soft" id="demo">Mit Beispieldaten ausprobieren</button></div></div>`;return}
  const d=diff(m.last.start,t)+1,u=diff(t,m.next),ph=d>m.cur.L?'lut':phaseOf(m.cur,d),p=PH[ph];
  const until=u>1?`Periode in ${u} Tagen`:u===1?'Periode morgen':u===0?'Periode heute erwartet':`${-u} ${-u===1?'Tag':'Tage'} überfällig`;
  const inP=ph==='men'||(S.days[tk]||{}).flow>0,en=ph==='lut'&&d>m.cur.L-5?2:p.e;
- const late=u<=2&&ph==='lut',fk=late?'late':ph==='ovu'?'fer':ph,fc={men:'sleepy',fol:'happy',fer:'shine',lut:'calm',late:'calm'}[fk];
- $('home').innerHTML=`${buddy(fk,fc)}<div class="ringbox">${ring(m,d)}<div class="center"><span class="small">Zyklustag</span><span class="big">${d}</span><span class="pill">${until}</span></div></div>
+ curPh=ph;const late=u<=2&&ph==='lut',fk=late?'late':ph==='ovu'?'fer':ph,fc={men:'sleepy',fol:'happy',fer:'shine',lut:'calm',late:'calm'}[fk];
+ $('home').innerHTML=`<div class="ringbox">${ring(m,d)}<div class="center"><span class="small">Zyklustag</span><span class="big">${d}</span><span class="pill">${until}</span></div></div>
  ${inP?`<div class="card"><h3>Blutung heute</h3>${flowChips(tk)}</div>`:`<div class="row"><button class="btn" id="startToday">Periode hat heute begonnen</button></div>`}
  <div class="phase" style="background:${p.c}"><div class="ic">${svgI(p.i)}</div><div><h3>${p.n}</h3><p>${p.t}</p></div></div>
  <div class="card"><h3>Energie &amp; Tipps</h3>
   <div class="energy"><div class="meter">${[1,2,3,4,5].map(i=>`<i style="${i<=en?'background:'+p.c:''}"></i>`).join('')}</div><span class="small">${en===2&&ph==='lut'?'Eher niedrig':p.el}</span></div>
   <div class="tips">
    <div class="tip"><div class="ic" style="background:var(--ice)">${svgI('run')}</div><div><b>Bewegung</b><p>${p.sp}</p></div></div>
-   <div class="tip"><div class="ic" style="background:var(--butter)">${svgI('food')}</div><div><b>Ernährung</b><p>${p.fo}</p></div></div>
+   <div class="tip"><div class="ic" style="background:var(--butter)">${svgI('food')}</div><div><b>Ernährung</b><p>${p.fo}</p><button class="nlink" id="nutri">Nährstoffe ansehen ›</button></div></div>
    <div class="tip"><div class="ic" style="background:var(--peach)">${svgI('heart')}</div><div><b>Achte auf</b><p>${p.at}</p></div></div>
   </div><p class="note" style="margin:12px 0 0">Allgemeine Tipps – jeder Körper ist anders.</p></div>
  ${hzCard(m,d)}
@@ -399,13 +453,17 @@ function renderCal(dir){
  if(dir){w.classList.add(dir>0?'sl':'sr')}
  renderTiles(m);
 }
+function renderMsg(m){let k='none',c='var(--peach)';if(m.last){const t=today(),d=diff(m.last.start,t)+1,u=diff(t,m.next),ph=d>m.cur.L?'lut':phaseOf(m.cur,d);k=u<=2&&ph==='lut'?'late':ph==='ovu'?'fer':ph;c=PH[ph].c}
+ const L=SAY[k],txt=k==='none'?'Schön, dass du da bist. Trag deine Periode ein, dann geht’s los.':L[(Math.floor(today()/864e5)+sayN)%L.length];
+ $('dmsg').innerHTML=`<div class="ic" style="background:${c}">${svgI('heart')}</div><div><small>Für heute</small><span>${txt}</span></div>`}
 function renderTiles(m){
+ renderMsg(m);
  if(!m.last){$('tiles').innerHTML='';return}
  const t=today(),u=diff(t,m.next),y=cur.getFullYear(),mo=cur.getMonth();
  const pd=Object.keys(S.days).filter(k=>{const d=parse(k);return S.days[k].flow>0&&d.getFullYear()===y&&(calMode==='y'||d.getMonth()===mo)}).length;
  $('tiles').innerHTML=`<div class="tile" style="background:var(--bub)"><span>Nächste Periode</span><b>${u>0?'in '+u+' T.':u===0?'heute':'überfällig'}</b><span>${fmt(m.next,{day:'numeric',month:'short'})}</span></div>
  <div class="tile" style="background:var(--olive);color:#2c2a05"><span>Eisprung</span><b>${fmt(m.ovD,{day:'numeric',month:'short'})}</b><span>geschätzt</span></div>
- <div class="tile" style="background:var(--butter)"><span>Periodentage</span><b>${pd}</b><span>${calMode==='y'?'in '+y:'in diesem Monat'}</span></div>`;
+ <div class="tile" style="background:var(--peach)"><span>Periodentage</span><b>${pd}</b><span>${calMode==='y'?'in '+y:'in diesem Monat'}</span></div>`;
 }
 function step(n){hideAct();if(calMode==='m')cur.setMonth(cur.getMonth()+n);else cur.setFullYear(cur.getFullYear()+n);renderCal(n)}
 function setMode(md){calMode=md;hideAct();document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===md));renderCal()}
@@ -491,6 +549,8 @@ document.addEventListener('click',ev=>{
  if(b.dataset.tg){const k=b.dataset.k,e=entry(k),a=e[b.dataset.tg]=e[b.dataset.tg]||[],v=b.dataset.val,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1);b.classList.toggle('on');clean(k);save();return}
  switch(b.id){
   case'close':closeSheet();break;
+  case'nutri':openNut();break;
+  case'dmsg':{sayN++;renderMsg(model());break}
   case'buddy':{sayN++;const L=SAY[b.dataset.say];$('bubble').textContent=L[(Math.floor(today()/864e5)+sayN)%L.length];b.classList.remove('bounce');void b.offsetWidth;b.classList.add('bounce');break}
   case'plus':openDay(key(today()));break;
   case'startToday':{const k=key(today()),was=(S.days[k]||{}).flow;entry(k).flow=2;save();renderAll();afterFlow(k,was);break}
