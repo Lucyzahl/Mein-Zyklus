@@ -132,6 +132,27 @@ textarea{font:inherit;font-size:16px;width:100%;min-height:90px;border:2px solid
 .cy .top b{font:600 16px Fredoka,sans-serif}.cy .top span{color:var(--mu);font-size:13px;white-space:nowrap}
 .dots{display:flex;gap:3px}.dots i{flex:1 1 0;max-width:11px;aspect-ratio:1;border-radius:50%}
 .dots .p{background:var(--bub)}.dots .f{background:var(--olive)}.dots .o{background:var(--orange)}.dots .fo{background:var(--butter)}.dots .lu{background:var(--lilac)}.dots .fut{opacity:.35}
+.buddy{display:flex;align-items:center;gap:10px;margin:2px 0 4px}
+.mascot{flex:none;width:78px;height:78px;border:0;background:none;padding:0;cursor:pointer}
+.mascot svg{width:100%;height:100%;overflow:visible}
+.bubble{position:relative;background:var(--card);border-radius:20px;padding:10px 14px;font-size:15px;line-height:1.35}
+.bubble::before{content:"";position:absolute;left:-7px;top:50%;margin-top:-7px;border:7px solid transparent;border-left:0;border-right-color:var(--card)}
+.rain{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+.rain i{position:absolute;top:-30px;width:var(--s);height:var(--s);background:var(--c);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);animation:fall var(--d) ease-in var(--w) forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(var(--r))}}
+.hug{position:fixed;inset:0;display:grid;place-items:center;z-index:29;background:rgb(45 8 26/.25);animation:fade .3s ease}
+.hug>div{background:var(--bg-home);border-radius:30px;padding:22px 26px;text-align:center;max-width:300px;box-shadow:0 14px 40px rgb(45 8 26/.3)}
+.hug svg{width:110px;height:110px}.hug p{margin:8px 0 0;font:600 20px Fredoka,sans-serif}.hug span{color:var(--mu);font-size:15px}
+@keyframes fade{from{opacity:0}}
+.mrow{display:grid;grid-template-columns:12px minmax(0,1fr) 36px;align-items:center;gap:10px;padding:8px 0}
+.mrow+.mrow{border-top:1px solid var(--line)}.mrow>i{width:12px;height:12px;border-radius:50%}
+.mrow b{display:block;font-weight:600}.mrow span{font-size:13px;color:var(--mu)}.mrow svg{width:36px;height:36px}
+.insight{margin:12px 0 0;padding:12px 14px;border-radius:18px;background:var(--butter);color:#3d0f24;font-size:15px}
+@media(prefers-reduced-motion:no-preference){.bounce{animation:bnc .5s ease}@keyframes bnc{30%{transform:translateY(-10px) rotate(-8deg)}60%{transform:translateY(0) rotate(5deg)}}
+.mascot svg{animation:bob 3.5s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-3px) rotate(3deg)}}}
+.hz{position:relative;height:190px;margin:6px 0 4px}.hz svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hleg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px;color:var(--mu)}.hleg i{display:inline-block;width:14px;height:4px;border-radius:2px;margin-right:5px;vertical-align:3px}
+.hnow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin-top:10px;font-size:14px}.hnow b{font-weight:600}
 .empty{text-align:center;padding:10px 4px}.empty p{color:var(--mu)}
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translateX(-50%);background:var(--grape);color:#fff;padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20;white-space:nowrap}
 .toast.on{opacity:1}
@@ -276,13 +297,69 @@ function ring(m,d){
  return`<svg viewBox="0 0 300 300" aria-hidden="true">${s}${ic}<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="12" stroke="#fff" stroke-width="4" style="fill:var(--grape)"/></svg>`;
 }
 function flowChips(k){const f=(S.days[k]||{}).flow||0;return`<div class="chips">${FLOW.map((n,i)=>`<button class="chip${i?' f':''}${i===f?' on':''}" data-flow="${i}" data-k="${k}">${n}</button>`).join('')}</div>`}
-function renderHome(){
+const STAR=(()=>{const A=[[-97,1,.17],[-52,.78,.21],[-8,.92,.15],[31,.66,.23],[72,.88,.16],[121,.74,.2],[163,1,.15],[210,.82,.19]];let s='';
+ for(let i=0;i<=180;i++){const t=i/180*2*Math.PI;let r=20;for(const[a,L,w]of A){const dt=(t-a*Math.PI/180+3*Math.PI)%(2*Math.PI)-Math.PI;r+=24*L*Math.exp(-((dt/w)**2)*.7)}s+=(i?'L':'M')+(50+r*Math.cos(t)).toFixed(1)+' '+(53+r*Math.sin(t)).toFixed(1)}return s+'Z'})();
+function mascot(f){const ink='#5a1636';let face='';
+ const eye=(x,lid)=>`<ellipse cx="${x}" cy="48" rx="4.3" ry="5" fill="#fff"/><circle cx="${x+.8}" cy="46.6" r="2" fill="${ink}"/>${lid?`<path d="M${x-4.6} 46.5h9.2" stroke="${ink}" stroke-width="1.6" stroke-linecap="round"/><path d="M${x-4.5} 44 h9 v2.5h-9z" style="fill:var(--bub)"/>`:''}`;
+ const blush='<ellipse cx="34.5" cy="56" rx="3.4" ry="2" fill="#fff" opacity=".45"/><ellipse cx="57.5" cy="56" rx="3.4" ry="2" fill="#fff" opacity=".45"/>';
+ if(f==='sleepy')face=`<path d="M37 48q3.5 3 7 0M50 48q3.5 3 7 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/>${blush}<ellipse cx="47" cy="57" rx="2" ry="2.4" fill="${ink}"/><text x="66" y="30" font-size="9" font-family="Fredoka,sans-serif" font-weight="600" fill="${ink}">z</text><text x="72" y="22" font-size="7" font-family="Fredoka,sans-serif" font-weight="600" fill="${ink}">z</text>`;
+ else if(f==='shine')face=`${eye(40)}${eye(54)}<circle cx="39" cy="46.4" r=".9" fill="#fff"/><circle cx="53" cy="46.4" r=".9" fill="#fff"/>${blush}<path d="M42 55q5 6 10 0z" fill="${ink}"/><path d="M80 18l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6zM14 70l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z" style="fill:var(--butter)"/>`;
+ else if(f==='calm')face=`${eye(40,1)}${eye(54,1)}${blush}<path d="M43.5 56q3.5 3 7 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+ else face=`${eye(40)}${eye(54)}<path d="M43.5 55.5q3.5 3.5 7 0" stroke="${ink}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+ return`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--bub)"/>${face}</svg>`}
+const SAY={men:['Heute darfst du es ruhig angehen lassen.','Wärmflasche und Tee? Klingt nach einem Plan.','Du machst das super – auch an müden Tagen.','Kuscheldecken-Tag. Ich bin dabei.'],
+ fol:['Ich spür’s: Deine Energie kommt zurück!','Guter Tag, um etwas Neues anzufangen.','Du strahlst heute ein bisschen mehr.','Zeit, Pläne zu schmieden!'],
+ fer:['Heute leuchtest du richtig!','Volle Energie – genieß sie!','Heute ist ein Glitzertag.','Du bist heute nicht zu bremsen.'],
+ lut:['Sei heute besonders lieb zu dir.','Ein Stück Schokolade ist völlig okay.','Gönn dir eine Pause, du hast sie verdient.','Langsam ist auch ein Tempo.'],
+ late:['Bald ist es so weit – denk an deine Tasche.','Ich halte schon mal die Wärmflasche bereit.','Bleib entspannt, ich pass mit auf.'],
+ none:['Hallo! Ich bin dein Zyklus-Stern.']};
+let sayN=0;
+function buddy(key2,f){const L=SAY[key2],i=(Math.floor(today()/864e5)+sayN)%L.length;return`<div class="buddy"><button class="mascot" id="buddy" data-say="${key2}" aria-label="Stern antippen">${mascot(f)}</button><div class="bubble" id="bubble">${L[i]}</div></div>`}
+function periodStart(k){const d=parse(k);return!((S.days[key(add(d,-1))]||{}).flow>0)&&!((S.days[key(add(d,-2))]||{}).flow>0)}
+function celebrate(){
+ const r=document.createElement('div');r.className='rain';const C=['var(--bub)','var(--butter)','var(--olive)','var(--lilac)','var(--orange)','var(--ice)'];
+ if(!matchMedia('(prefers-reduced-motion: reduce)').matches)for(let i=0;i<36;i++){const s=document.createElement('i');s.style.cssText=`left:${Math.random()*100}%;--s:${10+Math.random()*16}px;--c:${C[i%6]};--d:${1.6+Math.random()*1.4}s;--w:${Math.random()*.8}s;--r:${Math.random()*720-360}deg`;r.appendChild(s)}
+ const g=document.createElement('div');g.className='hug';g.innerHTML=`<div>${mascot('calm')}<p>Pass gut auf dich auf</p><span>Deine Periode hat begonnen. Ich hab’s eingetragen.</span></div>`;
+ document.body.append(g,r);const end=()=>{g.remove()};g.onclick=end;setTimeout(end,3200);setTimeout(()=>r.remove(),4200)}
+function afterFlow(k,was){const e=S.days[k]||{};if(!(was>0)&&e.flow>0&&periodStart(k))celebrate()}
+function phaseOnDate(m,d){let i=-1;for(let j=0;j<m.G.length;j++)if(m.G[j].start<=d)i=j;if(i<0)return null;const g=m.G[i],ns=m.G[i+1]?m.G[i+1].start:m.next,L=diff(g.start,ns),day=diff(g.start,d)+1;
+ if(L>60||day>L)return null;let ov;if(i===m.G.length-1)ov=m.cur.ov;else{let pk=null;for(let x=6;x<L;x++){const e=S.days[key(add(g.start,x))];if(e&&FERT.includes(e.dis))pk=x+1}ov=pk&&L-pk>=8?pk:L-m.lutL+1}
+ const ph=phaseOf({L,ov,P:g.len},day);return ph==='ovu'?'fer':ph}
+function moodCard(m){
+ const acc={men:[],fol:[],fer:[],lut:[]},words={men:{},fol:{},fer:{},lut:{}};let n=0;
+ for(const[k,e]of Object.entries(S.days)){if(!(e.mood||[]).length)continue;const ph=phaseOnDate(m,parse(k));if(!ph)continue;n++;acc[ph].push(mean(e.mood.map(x=>VAL[x]||0)));e.mood.forEach(w=>words[ph][w]=(words[ph][w]||0)+1)}
+ const rows=['men','fol','fer','lut'].map(ph=>{const a=acc[ph],v=a.length?mean(a):null,top=Object.entries(words[ph]).sort((x,y)=>y[1]-x[1])[0];
+  return{ph,v,html:`<div class="mrow"><i style="background:${PH[ph].c}"></i><div><b>${ph==='fer'?'Fruchtbare Tage':PH[ph].n}</b><span>${top?'meist „'+top[0]+'“ · '+a.length+' '+(a.length===1?'Tag':'Tage'):'noch keine Einträge'}</span></div>${face(v===null?null:v>.4?1:v<-.4?-1:0)}</div>`}});
+ const has=rows.filter(r=>r.v!==null);let ins='';
+ if(has.length>=2&&n>=5){const best=has.reduce((a,b)=>b.v>a.v?b:a),worst=has.reduce((a,b)=>b.v<a.v?b:a),nm=r=>r.ph==='fer'?'an den fruchtbaren Tagen':r.ph==='men'?'während der Periode':'in der '+PH[r.ph].n;
+  ins=`<p class="insight">Am besten fühlst du dich meist <b>${nm(best)}</b>${best!==worst&&worst.v<best.v-.3?`, eher schwerer fällt es dir <b>${nm(worst)}</b>`:''}.</p>`}
+ else ins='<p class="note" style="margin:10px 0 0">Trag ein paar Wochen lang deine Stimmung ein, dann erkennt die App dein Muster.</p>';
+ return`<div class="card"><h2>Stimmung im Zyklus</h2>${rows.map(r=>r.html).join('')}${ins}</div>`}
+const HZ=[['Östrogen','var(--bub)'],['Progesteron','var(--grape)'],['LH','var(--orange)'],['FSH','#6f97c9']];
+const gs=(x,mu,s)=>Math.exp(-(((x-mu)/s)**2)/2);
+function hormones(x,L,ov){const e=x<=ov-1?.18+.82*gs(x,ov-1,3.6):Math.max(.18+.82*gs(x,ov-1,1.3),.18+.42*gs(x,ov+7,3.6));
+ return[e,.04+.96*gs(x,ov+7,3.2),.1+.9*gs(x,ov-.7,.9),.22+.25*gs(x,2,3)+.38*gs(x,ov-.7,1)+.12*gs(x,L+1,2.5)]}
+let hzState=null;
+function drawHz(){const box=$('hz');if(!box||!hzState)return;const{L,ov,d}=hzState,W=box.clientWidth,H=box.clientHeight,pl=4,pr=4,pt=10,pb=24,X=x=>pl+(x-1)/(L-1)*(W-pl-pr),Y=v=>pt+(1-v)*(H-pt-pb);
+ let s=`<rect x="${X(1)}" y="${pt}" width="${X(hzState.P+.5)-X(1)}" height="${H-pt-pb}" rx="8" style="fill:var(--bub)" opacity=".13"/><rect x="${X(ov-5)}" y="${pt}" width="${X(ov+1)-X(ov-5)}" height="${H-pt-pb}" rx="8" style="fill:var(--olive)" opacity=".15"/>`;
+ HZ.forEach(([n,c],j)=>{let p='';for(let x=1;x<=L;x+=.25)p+=(p?'L':'M')+X(x).toFixed(1)+' '+Y(hormones(x,L,ov)[j]).toFixed(1);s+=`<path d="${p}" fill="none" stroke-width="${j<2?3.2:2.2}" stroke-linecap="round" style="stroke:${c}"${j>1?' stroke-dasharray="1 0"':''}/>`});
+ const tx=X(Math.min(d,L));s+=`<line x1="${tx}" x2="${tx}" y1="${pt-6}" y2="${H-pb}" stroke-width="2" stroke-dasharray="3 4" style="stroke:var(--ink)"/><circle cx="${tx}" cy="${pt-6}" r="4" style="fill:var(--ink)"/>`;
+ const lab=W<360?[[1,'1'],[ov,'Eisprung'],[L,'Tag '+L]]:[[1,'Tag 1'],[ov,'Eisprung'],[L,'Tag '+L]];
+ lab.forEach(([x,t],i)=>s+=`<text x="${X(x)}" y="${H-6}" font-size="12" text-anchor="${i===0?'start':i===2?'end':'middle'}" style="fill:var(--mu)">${t}</text>`);
+ box.innerHTML=`<svg aria-label="Typischer Hormonverlauf">${s}</svg>`}
+function hzCard(m,d){hzState={L:m.cur.L,ov:m.cur.ov,P:m.cur.P,d};const v=hormones(Math.min(d,m.cur.L),m.cur.L,m.cur.ov),lv=x=>x>.7?'hoch':x>.38?'mittel':'niedrig';
+ return`<div class="card"><h3>Hormone im Zyklus</h3><div class="hleg">${HZ.map(([n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('')}</div><div class="hz" id="hz"></div>
+ <div class="hnow">${HZ.map(([n],j)=>`<span>${n}: <b>${lv(v[j])}</b></span>`).join('')}</div>
+ <p class="note" style="margin:10px 0 0">Typischer Verlauf, an deinen Zyklus angepasst – keine Messung. LH löst den Eisprung aus, FSH lässt die Eizelle reifen.</p></div>`}
+function renderHome(){_rh();drawHz()}
+function _rh(){
  const m=model(),t=today(),tk=key(t);$('dateline').textContent=fmt(t,{weekday:'long',day:'numeric',month:'long'});
- if(!m.last){$('home').innerHTML=`<div class="empty"><svg viewBox="0 0 300 300" width="200" aria-hidden="true"><circle cx="150" cy="150" r="110" fill="none" stroke-width="36" stroke-dasharray="40 26" stroke-linecap="round" style="stroke:var(--peach)"/><circle cx="150" cy="40" r="14" stroke="#fff" stroke-width="4" style="fill:var(--grape)"/></svg><h2>Willkommen!</h2><p>Trag den ersten Tag deiner letzten Periode ein. Danach berechnet die App deinen Zyklus.</p><div class="row"><button class="btn" id="startToday">Periode hat heute begonnen</button></div><div class="row"><button class="btn soft" id="pickDay">Anderen Tag wählen</button></div><div class="row"><button class="btn soft" id="demo">Mit Beispieldaten ausprobieren</button></div></div>`;return}
+ if(!m.last){$('home').innerHTML=`${buddy('none','happy')}<div class="empty"><svg viewBox="0 0 300 300" width="200" aria-hidden="true"><circle cx="150" cy="150" r="110" fill="none" stroke-width="36" stroke-dasharray="40 26" stroke-linecap="round" style="stroke:var(--peach)"/><circle cx="150" cy="40" r="14" stroke="#fff" stroke-width="4" style="fill:var(--grape)"/></svg><h2>Willkommen!</h2><p>Trag den ersten Tag deiner letzten Periode ein. Danach berechnet die App deinen Zyklus.</p><div class="row"><button class="btn" id="startToday">Periode hat heute begonnen</button></div><div class="row"><button class="btn soft" id="pickDay">Anderen Tag wählen</button></div><div class="row"><button class="btn soft" id="demo">Mit Beispieldaten ausprobieren</button></div></div>`;return}
  const d=diff(m.last.start,t)+1,u=diff(t,m.next),ph=d>m.cur.L?'lut':phaseOf(m.cur,d),p=PH[ph];
  const until=u>1?`Periode in ${u} Tagen`:u===1?'Periode morgen':u===0?'Periode heute erwartet':`${-u} ${-u===1?'Tag':'Tage'} überfällig`;
  const inP=ph==='men'||(S.days[tk]||{}).flow>0,en=ph==='lut'&&d>m.cur.L-5?2:p.e;
- $('home').innerHTML=`<div class="ringbox">${ring(m,d)}<div class="center"><span class="small">Zyklustag</span><span class="big">${d}</span><span class="pill">${until}</span></div></div>
+ const late=u<=2&&ph==='lut',fk=late?'late':ph==='ovu'?'fer':ph,fc={men:'sleepy',fol:'happy',fer:'shine',lut:'calm',late:'calm'}[fk];
+ $('home').innerHTML=`${buddy(fk,fc)}<div class="ringbox">${ring(m,d)}<div class="center"><span class="small">Zyklustag</span><span class="big">${d}</span><span class="pill">${until}</span></div></div>
  ${inP?`<div class="card"><h3>Blutung heute</h3>${flowChips(tk)}</div>`:`<div class="row"><button class="btn" id="startToday">Periode hat heute begonnen</button></div>`}
  <div class="phase" style="background:${p.c}"><div class="ic">${svgI(p.i)}</div><div><h3>${p.n}</h3><p>${p.t}</p></div></div>
  <div class="card"><h3>Energie &amp; Tipps</h3>
@@ -292,6 +369,7 @@ function renderHome(){
    <div class="tip"><div class="ic" style="background:var(--butter)">${svgI('food')}</div><div><b>Ernährung</b><p>${p.fo}</p></div></div>
    <div class="tip"><div class="ic" style="background:var(--peach)">${svgI('heart')}</div><div><b>Achte auf</b><p>${p.at}</p></div></div>
   </div><p class="note" style="margin:12px 0 0">Allgemeine Tipps – jeder Körper ist anders.</p></div>
+ ${hzCard(m,d)}
  <div class="card"><h3>So wird gerechnet</h3><p class="small" style="margin:0">Nächste Periode etwa am <b>${fmt(m.next)}</b>, Eisprung etwa am <b>${fmt(m.ovD)}</b>.</p><ul class="why">${m.why.map(w=>`<li>${w}</li>`).join('')}</ul>
  <p class="note" style="margin:10px 0 0">Schätzungen aus deinen Einträgen – kein Verhütungsmittel.</p></div>
  ${cyclesCard(m)}`;
@@ -364,6 +442,7 @@ function renderStat(){
  $('stat').innerHTML=`<div class="hero">${star()}<div class="in"><div class="small">Ø Zykluslänge</div><div class="num">${m.avgC}</div><div class="small">Tage</div><span class="tag">${rng<=7?'Regelmäßig':'Schwankend'}</span></div></div>
  <div class="trio"><div><b>${m.avgP} T.</b><span>Ø Periode</span></div><div><b>${L.length?Math.min(...L)+'–'+Math.max(...L):'–'}</b><span>Kürzester bis längster</span></div><div><b>${m.lutN?m.lutL+' T.':m.C.length}</b><span>${m.lutN?'Ø Lutealphase':'Erfasste Zyklen'}</span></div></div>
  <div class="card"><h2>Stimmung</h2><div class="moods">${wk.map(w=>`<div>${face(w.v)}<span>${w.d.toLocaleDateString('de-DE',{weekday:'short'}).replace('.','')}</span></div>`).join('')}</div></div>
+ ${moodCard(m)}
  <div class="card"><h2>Letzte Zyklen</h2><div class="bars">${m.C.slice(-6).reverse().map(c=>`<div class="bar"><span>${fmt(c.start,{day:'numeric',month:'short'})}</span><div class="tr"><i style="--c:var(--bub);width:${Math.min(100,c.len/40*100)}%"></i></div><span class="n">${c.len} T.</span></div>`).join('')}</div></div>
  <div class="card"><h2>Häufigste Symptome</h2>${top.length?`<div class="bars">${top.map(([s,c])=>`<div class="bar w"><span>${s}</span><div class="tr"><i style="--c:var(--orange);width:${c/mx*100}%"></i></div><span class="n">${c}×</span></div>`).join('')}</div>`:'<p class="sub">Noch keine Symptome eingetragen.</p>'}
  ${m.pmsO?`<p class="note" style="margin:12px 0 0">PMS-Anzeichen zeigen sich bei dir meist ${m.pmsO} Tage vor der Periode.</p>`:''}</div>`;
@@ -394,6 +473,8 @@ function demo(){
   if(c<5){S.days[key(add(s,-4))]={flow:0,sym:['Brustspannen','Blähbauch'],mood:['Gereizt'],note:''};
    const pk=add(s,-14);[['Cremig',-2],['Wässrig',-1],['Spinnbar',0],['Klebrig',2]].forEach(([v,o])=>entry(key(add(pk,o))).dis=v);
    entry(key(add(pk,-1))).sex='Geschützt'}
+  [[1,'Sensibel'],[7,'Energiegeladen'],[9,'Gut gelaunt'],[13,'Gut gelaunt'],[20,'Ruhig']].forEach(([o,w])=>{if(c>0||o<13){const k=key(add(s,o));if(k<key(today()))entry(k).mood=[w]}});
+  if(c<5)entry(key(add(s,-2))).mood=['Traurig'];
   s=add(s,-lens[c%5])}
  ['Gut gelaunt','Energiegeladen','Ruhig','Sensibel',null,'Gut gelaunt','Ruhig'].forEach((mo,i)=>{if(mo){const k=key(add(today(),i-6));entry(k).mood=[mo]}});
  entry(key(add(today(),-2))).dis='Cremig';entry(key(add(today(),-1))).dis='Wässrig';
@@ -405,19 +486,20 @@ document.addEventListener('click',ev=>{
  if(b.dataset.v){show(b.dataset.v);return}
  if(b.dataset.mode){setMode(b.dataset.mode);return}
  if(b.dataset.open){openDay(b.dataset.open);return}
- if(b.dataset.flow!==undefined){const k=b.dataset.k;entry(k).flow=+b.dataset.flow;clean(k);save();b.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b));if(!$('scrim').classList.contains('on'))renderAll();return}
+ if(b.dataset.flow!==undefined){const k=b.dataset.k,was=(S.days[k]||{}).flow;entry(k).flow=+b.dataset.flow;afterFlow(k,was);clean(k);save();b.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b));if(!$('scrim').classList.contains('on'))renderAll();return}
  if(b.dataset.one){const k=b.dataset.k,e=entry(k),f=b.dataset.one,on=e[f]!==b.dataset.val;e[f]=on?b.dataset.val:'';b.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',on&&x===b));clean(k);save();return}
  if(b.dataset.tg){const k=b.dataset.k,e=entry(k),a=e[b.dataset.tg]=e[b.dataset.tg]||[],v=b.dataset.val,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1);b.classList.toggle('on');clean(k);save();return}
  switch(b.id){
   case'close':closeSheet();break;
+  case'buddy':{sayN++;const L=SAY[b.dataset.say];$('bubble').textContent=L[(Math.floor(today()/864e5)+sayN)%L.length];b.classList.remove('bounce');void b.offsetWidth;b.classList.add('bounce');break}
   case'plus':openDay(key(today()));break;
-  case'startToday':{entry(key(today())).flow=2;save();renderAll();toast('Eingetragen');break}
+  case'startToday':{const k=key(today()),was=(S.days[k]||{}).flow;entry(k).flow=2;save();renderAll();afterFlow(k,was);break}
   case'pickDay':show('cal');break;
   case'demo':demo();break;
   case'prev':step(-1);break;
   case'next':step(1);break;
   case'actMore':{const k=sel;hideAct();openDay(k);break}
-  case'actGo':{const k=sel,e=entry(k),on=!(e.flow>0);e.flow=on?2:0;clean(k);save();hideAct();renderAll();toast(on?'Periode eingetragen':'Periode entfernt');break}
+  case'actGo':{const k=sel,e=entry(k),on=!(e.flow>0);e.flow=on?2:0;clean(k);save();hideAct();renderAll();if(on&&periodStart(k))celebrate();else toast(on?'Periode eingetragen':'Periode entfernt');break}
   case'exp':{const t=JSON.stringify(S);$('io').value=t;try{navigator.clipboard.writeText(t).then(()=>toast('Kopiert'),()=>toast('Code markieren und kopieren'))}catch(e){toast('Code markieren und kopieren')}break}
   case'imp':try{const j=JSON.parse($('io').value);if(!j.days)throw 0;S={days:j.days,set:{...S.set,...(j.set||{})}};save();renderAll();toast('Wiederhergestellt')}catch(e){toast('Code ungültig')}break;
   case'wipe':confirmBox('Alle Einträge löschen?',()=>{S.days={};save();toast('Gelöscht')});break;
@@ -441,6 +523,7 @@ $('scrim').addEventListener('click',ev=>{if(ev.target.id==='scrim')closeSheet()}
   else if(!ps.moved&&!ps.long){if(ps.day)selectDay(ps.day);else if(ps.mon){cur=new Date(cur.getFullYear(),+ps.mon.dataset.month,1);setMode('m')}}
   ps=null});
  w.addEventListener('pointercancel',()=>{if(ps)clearTimeout(ps.timer);ps=null});}
+{let lw=0;const ro=new ResizeObserver(()=>{const b=$('hz');if(b&&b.clientWidth!==lw){lw=b.clientWidth;drawHz()}});ro.observe($('home'))}
 renderAll();
 if('serviceWorker'in navigator){try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}}
 }
